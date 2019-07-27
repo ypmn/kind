@@ -1,0 +1,44 @@
+version: '2'
+services:
+  manager:
+    image: bsycorp/kind:latest-1.12
+    container_name: kmaster
+    hostname: kmaster
+ #   user: root
+    privileged: true
+    ports:
+      - "8443:8443"
+      - "10080:10080"
+      - "80:80"
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.5
+ #   volumes:
+ #     - ./data:/home/data
+  node1:
+    image: bsycorp/kind:latest-1.12
+    container_name: k-node1
+    hostname: node1
+    privileged: true
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.3
+ #   volumes:
+  #    - ./data:/home/data
+  node2:
+    image: bsycorp/kind:latest-1.12
+    container_name: k-node2
+    hostname: node2
+    privileged: true
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.4
+#    volumes:
+ #     - ./data:/home/data
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          #docker-compose v3+ do not use ip_range
+          ip_range: 172.28.5.0/24
